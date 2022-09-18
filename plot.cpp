@@ -159,20 +159,6 @@ void Plot::checkAndSetMax(const QPointF &point, const TYPE_OF_VAR type)
     }
 }
 
-//void Plot::checkAndSetMin(const QPointF &point, const TYPE_OF_VAR type)
-//{
-//    if (type == ARGUMENT){ // type is X
-//        if(point.x() < xMin){
-//            xMin = point.x();
-//        }
-//    }
-//    else if (type == VALUE){// type is Y
-//        if(point.y() < yMin){
-//            yMin = point.y();
-//        }
-//    }
-//}
-
 void Plot::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
