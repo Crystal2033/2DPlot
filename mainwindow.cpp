@@ -10,15 +10,15 @@
 
 void MainWindow::createPlot()
 {
-    plot->create(20, 20);
+    plot->create(aCoeffNumGadget->value(), xEdgeNumGadget->value());
 }
 
-void MainWindow::addACoeffMenu()
+void MainWindow::addACoeffMenu(const int leftEdge, const int rightEdge)
 {
     aCoeffHorLay = new QHBoxLayout();
     aCoeffLabel = new QLabel("a");
     aCoeffSlider = new QSlider(Qt::Horizontal);
-    aCoeffSlider->setRange(1, 40);
+    aCoeffSlider->setRange(leftEdge, rightEdge);
     aCoeffSlider->setTickPosition(QSlider::TicksBelow);
 
     aCoeffNumGadget = new QLCDNumber();
@@ -36,25 +36,31 @@ void MainWindow::addACoeffMenu()
 void MainWindow::onACoeffValueChanged(int val)
 {
     aCoeffNumGadget->display(val);
-//    qDebug() << aCoeffNumGadget->value() << Qt::endl;
-//    qDebug() << xEdgeNumGadget->value() << Qt::endl;
     plot->create(aCoeffNumGadget->value(), xEdgeNumGadget->value());
 }
 
 void MainWindow::onXEdgeValueChanged(int val)
 {
     xEdgeNumGadget->display(val);
-//    qDebug() << aCoeffNumGadget->value() << Qt::endl;
-//    qDebug() << xEdgeNumGadget->value() << Qt::endl;
     plot->create(aCoeffNumGadget->value(), xEdgeNumGadget->value());
 }
 
-void MainWindow::addXEdgeMenu()
+void MainWindow::showDeveloperInfo()
+{
+    QMessageBox::about(this, "Developer Info",
+"<H2> <U>Developer</U>: </H2>"
+"<H3> Kulikov Pavel. FIIT M80-311B-20. <font color=\"green\"> VARIANT 20.</font> </H3>"
+"<h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;x^3 </h2>"
+"<h2>y^2 = &nbsp;------ &nbsp;&nbsp;&nbsp;&nbsp;, x in range (0; B], B>0 </h2>"
+"<h2> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;(a-x) </h2>");
+}
+
+void MainWindow::addXEdgeMenu(const int leftEdge, const int rightEdge)
 {
     xEdgeHorLay = new QHBoxLayout();
     xEdgeLabel = new QLabel("B (x edge)");
     xEdgeSlider = new QSlider(Qt::Horizontal);
-    xEdgeSlider->setRange(20, 200);
+    xEdgeSlider->setRange(leftEdge, rightEdge);
     xEdgeSlider->setTickPosition(QSlider::TicksBelow);
 
     xEdgeNumGadget = new QLCDNumber();
@@ -69,23 +75,32 @@ void MainWindow::addXEdgeMenu()
     connect(xEdgeSlider, SIGNAL(valueChanged(int)), this, SLOT(onXEdgeValueChanged(int)));
 }
 
+void MainWindow::createToolBar()
+{
+    toolBar = this->addToolBar("Main toolbar");
+    QAction* getDevInfo = toolBar->addAction(QIcon(":/pictures/devIcon.png"), "Developer Info");
+    connect(getDevInfo, SIGNAL(triggered()), SLOT(showDeveloperInfo()));
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    createToolBar();
+
     mainLayout = new QVBoxLayout();
     plot = new Plot();
     mainLayout->addWidget(plot, 4);
     menuHorLayout = new QHBoxLayout();
-
-
-
+    this->setWindowTitle("Graphic`s plot");
+    this->setWindowIcon(QIcon(":/pictures/PlotIcon.png"));
     this->centralWidget()->setLayout(mainLayout);
-    createPlot();
 
-    addACoeffMenu();
-    addXEdgeMenu();
+    addACoeffMenu(1, 60);
+    addXEdgeMenu(20, 500);
+    createPlot();
     mainLayout->addLayout(menuHorLayout, 1);
 
 }

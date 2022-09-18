@@ -14,6 +14,10 @@
 #include <QSlider>
 #include <QLCDNumber>
 #include <QLabel>
+#include <QToolBar>
+#include <QIcon>
+#include <QAction>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +27,9 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
+    QToolBar* toolBar = nullptr;
+
+
     Plot* plot = nullptr;
     QVBoxLayout* mainLayout = nullptr;
     void createPlot();
@@ -38,18 +45,21 @@ private:
     QLCDNumber* xEdgeNumGadget = nullptr;
     QHBoxLayout* xEdgeHorLay = nullptr;
 
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    void addACoeffMenu();
-    void addXEdgeMenu();
+    void addACoeffMenu(const int leftEdge, const int rightEdge);
+    void addXEdgeMenu(const int leftEdge, const int rightEdge);
 
 private slots:
     void onACoeffValueChanged(int val);
     void onXEdgeValueChanged(int val);
+    void showDeveloperInfo();
 
 private:
     Ui::MainWindow *ui;
+    void createToolBar();
 };
 #endif // MAINWINDOW_H
