@@ -11,6 +11,9 @@
 #include <QMainWindow>
 #include "plot.h"
 #include <QLayout>
+#include <QSlider>
+#include <QLCDNumber>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,9 +26,28 @@ private:
     Plot* plot = nullptr;
     QVBoxLayout* mainLayout = nullptr;
     void createPlot();
+
+    QHBoxLayout* menuHorLayout = nullptr;
+    QLabel* aCoeffLabel = nullptr;
+    QSlider* aCoeffSlider = nullptr;
+    QLCDNumber* aCoeffNumGadget = nullptr;
+    QHBoxLayout* aCoeffHorLay = nullptr;
+
+    QLabel* xEdgeLabel = nullptr;
+    QSlider* xEdgeSlider = nullptr;
+    QLCDNumber* xEdgeNumGadget = nullptr;
+    QHBoxLayout* xEdgeHorLay = nullptr;
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    void addACoeffMenu();
+    void addXEdgeMenu();
+
+private slots:
+    void onACoeffValueChanged(int val);
+    void onXEdgeValueChanged(int val);
 
 private:
     Ui::MainWindow *ui;
